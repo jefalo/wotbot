@@ -13,18 +13,20 @@
 
 7. press start, and focus the mouse into it will use the first 4 tanks to random battle (settings can be changed in  config\tank_carousel_order.ini (better use tier 4-6 HT)
 
-=Notice=
+==Notice==
 don't drag the WOT window after press the START
 
-=Example Account=
+==Example Account==
 http://wotlabs.net/sea/player/duck_german
 
 
-=side effect if the tankbot crashed=
+=Future Work=
+
+==side effect if the tankbot crashed==
 There will be an process named key_map.exe left alive (need to close it manually)
 
 
-=something sucks=
+==something sucks==
 The whole file is quite large
 
 The aiming procedure is quite a shit
