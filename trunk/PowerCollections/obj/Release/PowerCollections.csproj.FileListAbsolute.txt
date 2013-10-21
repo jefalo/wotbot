@@ -1,0 +1,4 @@
+D:\Dropbox\code\TankBot\PowerCollections\bin\Release\PowerCollections.dll.config
+D:\Dropbox\code\TankBot\PowerCollections\bin\Release\PowerCollections.dll
+D:\Dropbox\code\TankBot\PowerCollections\obj\Release\ResolveAssemblyReference.cache
+D:\Dropbox\code\TankBot\PowerCollections\obj\Release\PowerCollections.dll
