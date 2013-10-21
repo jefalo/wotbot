@@ -23,7 +23,6 @@ http://wotlabs.net/sea/player/duck_german
 =side effect if the tankbot crashed=
 There will be an process named key_map.exe left alive (need to close it manually)
 
- would be replaced (need to restore it manually)
 
 =something sucks=
 The whole file is quite large
