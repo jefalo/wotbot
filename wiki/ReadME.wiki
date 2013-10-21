@@ -4,9 +4,9 @@
 1. rename the original res_mods to anything else you like
 
 2. put this whole folder into World_of_Tanks folder
-{{{
+
 3. replace %appdata%\Wargaming.net\WorldOfTanks\preferences.xml with preferences_bot.xml (better to keep an original copy)
-}}}
+
 4. open worldoftanks.exe make it in window mode (rather than full screen), and better make the graphics quality to minimum
 
 5. make sure it will only battle in Standard Mode (cancel encounter battle and assault battle)
