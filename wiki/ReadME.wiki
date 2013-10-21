@@ -1,4 +1,6 @@
 =Setup=
+0. Install .net framework 4.0
+
 1. rename the original res_mods to anything else you like
 
 2. put this whole folder into World_of_Tanks folder
