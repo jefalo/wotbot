@@ -19,4 +19,11 @@ namespace TankBot
             Helper.LogDebug("CannotAimException created");
         }
     }
+    class EnemyBaseReadException : Exception
+    {
+        public EnemyBaseReadException()
+        {
+            Helper.LogException("EnemyBaseReadException");
+        }
+    }
 }

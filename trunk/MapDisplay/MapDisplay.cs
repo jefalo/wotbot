@@ -31,11 +31,11 @@ namespace TankBot
         {
             _filename_items.Clear();
 
-            foreach (String t in Directory.EnumerateFiles(TBConst.trajectoryPath))
+            foreach (String t in Directory.EnumerateFiles(TBConst.jpgPath))
             {
                 if (t.EndsWith("jpg"))
                 {
-                    String x = t.Substring(TBConst.trajectoryPath.Length);
+                    String x = t.Substring(TBConst.jpgPath.Length);
                     x = x.Remove(x.Length - 4);
                     _filename_items.Add(x);
                 }
@@ -52,11 +52,11 @@ namespace TankBot
         {
 
             //string[,] names = new string[5, 4];
-            String file = TBConst.trajectoryPath + map_name + ".txt";
+            String file = TBConst.trajectoryPath_obsolete + map_name + ".txt";
 
             if (map_name[map_name.Length - 1] >= '0' && map_name[map_name.Length - 1] <= '9')
                 map_name = map_name.Substring(0, map_name.Length - 1);
-            img = Image.FromFile(TBConst.trajectoryPath + map_name + ".jpg");
+            img = Image.FromFile(TBConst.trajectoryPath_obsolete + map_name + ".jpg");
 
 
             mapMining = new MapMining(map_name);
@@ -97,7 +97,159 @@ namespace TankBot
             {
                 e.Graphics.DrawImage(img, new Rectangle(0, 0, WIDTH, WIDTH));
 
-                
+                if (checkShowEnemyBase.Checked)
+                {
+                    draw_point(mapMining.enemyBase(startPoint), 10.0f, Brushes.Blue, e.Graphics);
+                    draw_point(startPoint, 10.0f, Brushes.White, e.Graphics);
+
+                    //draw_point(mapMining.getFireAt(new Point(2, 8)), 10.0f, Brushes.White, e.Graphics);
+                }
+                else if (checkBoxLoadRoute.Checked)
+                {
+                    /*
+                    for(int i=0; i<WIDTH; i++)
+                        for(int j=0; j<WIDTH; j++)
+                            if (mapMining.tagMap[i, j] ==true)
+                                draw_point(new Point(MapMining.i2d(i), MapMining.i2d(j)), 1.0f, Brushes.Blue, e.Graphics);
+                    return;
+                     * */
+                    Trajectory t=mapMining.genRouteToFireposTagMap(this.startPoint);
+                    foreach (Point p in t)
+                    {
+                        draw_point(p, 2.0f, Brushes.Blue, e.Graphics);
+                    }
+                }
+                else if (checkBoxFireAt.Checked)
+                {
+                    foreach (Point p in mapMining.firepos)
+                    {
+                        draw_point(p, 10.0f, Brushes.Blue, e.Graphics);
+                    }
+                }
+                else
+                {
+                }
+
+                /*
+                Point ip = mapMining.getInterestPoint(new Point(8.96, 2.89), 150);
+                if (ip != null)
+                {
+                    Trace.WriteLine(ip);
+                    draw_point(ip, 50.0f, Brushes.White, e.Graphics);
+                }
+                Point eb = mapMining.enemyBase(new Point(8.96, 2.89));
+                if (eb != null)
+                {
+                    Trace.WriteLine(eb);
+                    draw_point(eb, 50.0f, Brushes.Green, e.Graphics);
+                }
+                 */
+            }
+
+        }
+
+        private void draw_point(Point p, float width, Brush brush, Graphics graphics)
+        {
+            float nx = (float)((p.x - 1) * WIDTH / 10.0);
+            float ny = (float)((p.y - 1) * WIDTH / 10.0);
+            graphics.FillEllipse(brush, nx - width / 2, ny - width / 2, width, width);
+        }
+
+
+
+        MapMining mapMining;
+        private void listBoxMaps_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            String map_name = (string)listBoxMaps.SelectedValue;
+            if (map_name != null)
+            {
+                load_data(map_name);
+                Invalidate();
+            }
+        }
+
+        private void listBoxFireAt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            Invalidate();
+
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            this.Invalidate();
+        }
+
+
+
+
+        private void MapDisplay_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.X > 512)
+                return;
+            if (e.Y > 512)
+                return;
+            double x = e.X * 10.0 / WIDTH + 1;
+            double y = e.Y * 10.0 / WIDTH + 1;
+            x = (int)(x * 100) / 100.0;
+            y = (int)(y * 100) / 100.0;
+            _fireat_items[listBoxFireAt.SelectedIndex] = x + " " + y;
+
+            listBoxFireAt.DataSource = null;
+            listBoxFireAt.DataSource = _fireat_items;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            String map_name = (string)listBoxMaps.SelectedValue;
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(TBConst.fireposPath + map_name + ".txt");
+            foreach (string t in _fireat_items)
+            {
+                file.WriteLine(t);
+            }
+            file.Close();
+        }
+
+        Point startPoint
+        {
+            get
+            {
+                return (Point)mapMining.startPoints[listBoxStaringPoint.SelectedIndex];
+            }
+        }
+        private void listBoxStaringPoint_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            this.Invalidate();
+        }
+
+
+        private void checkBoxHTRoute_CheckedChanged(object sender, EventArgs e)
+        {
+            this.Invalidate();
+        }
+
+        private void checkBoxFireAt_CheckedChanged(object sender, EventArgs e)
+        {
+            this.Invalidate();
+        }
+
+
+        private void checkBoxLoadRoute_CheckedChanged(object sender, EventArgs e)
+        {
+            this.Invalidate();
+        }
+
+
+
+
+    }
+}
+
+/*obsolete
+              
                 if (checkBoxReachable.Checked)
                 {
 
@@ -126,7 +278,8 @@ namespace TankBot
                     }
 
                 }
-                else if (checkBoxTag.Checked)
+
+                  else if (checkBoxTag.Checked)
                 {
                     Point startPoint = (Point)mapMining.startPoints[listBoxStaringPoint.SelectedIndex];
                     Trajectory t = mapMining.genRouteToFireposTagMap(startPoint);
@@ -141,7 +294,6 @@ namespace TankBot
                 }
                 else if (checkBoxHTRoute2.Checked)
                 {
-                    Point startPoint = (Point)mapMining.startPoints[listBoxStaringPoint.SelectedIndex];
                     Trajectory t = mapMining.genRouteToFirepos_osbolete(startPoint);
 
                     draw_point(startPoint, 10.0f, Brushes.White, e.Graphics);
@@ -171,160 +323,5 @@ namespace TankBot
                             }
                     }
                 }
-                else if (checkBoxHTRoute.Checked)
-                {
-                    Point startPoint = (Point)mapMining.startPoints[listBoxStaringPoint.SelectedIndex];
 
-                    //Trajectory tra = mapMining.getHTRoute(startPoint);
-                    Trajectory tra = mapMining.genRouteToFirepos_osbolete(startPoint);
-                    foreach (Point p in tra)
-                    {
-                        draw_point(p, 5.0f, Brushes.Blue, e.Graphics);
-                    }
-                    draw_point(startPoint, 10.0f, Brushes.White, e.Graphics);
-                    Point fireat = mapMining.getFirepos(startPoint);
-                    draw_point(fireat, 10.0f, Brushes.Yellow, e.Graphics);
-
-                    //draw_point(mapMining.getFireAt(new Point(2, 8)), 10.0f, Brushes.White, e.Graphics);
-                }
-                else if (checkBoxFireAt.Checked)
-                {
-                    foreach (Point p in mapMining.firepos)
-                    {
-                        draw_point(p, 10.0f, Brushes.Blue, e.Graphics);
-                    }
-                }
-                else
-                {
-                    foreach (Trajectory t in mapMining.trajs)
-                    {
-                        foreach (Point p in t)
-                        {
-                            draw_point(p, 2.0f, Brushes.Blue, e.Graphics);
-                        }
-                    }
-                }
-
-                /*
-                Point ip = mapMining.getInterestPoint(new Point(8.96, 2.89), 150);
-                if (ip != null)
-                {
-                    Trace.WriteLine(ip);
-                    draw_point(ip, 50.0f, Brushes.White, e.Graphics);
-                }
-                Point eb = mapMining.enemyBase(new Point(8.96, 2.89));
-                if (eb != null)
-                {
-                    Trace.WriteLine(eb);
-                    draw_point(eb, 50.0f, Brushes.Green, e.Graphics);
-                }
-                 */
-            }
-
-        }
-
-        private void draw_point(Point p, float width, Brush brush, Graphics graphics)
-        {
-            float nx = (float)((p.x - 1) * WIDTH/10.0 );
-            float ny = (float)((p.y - 1) * WIDTH / 10.0);
-            graphics.FillEllipse(brush, nx - width / 2, ny - width / 2, width, width);
-        }
-
-
-
-        MapMining mapMining;
-        private void listBoxMaps_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            String map_name = (string)listBoxMaps.SelectedValue;
-            if (map_name != null)
-            {
-                load_data(map_name);
-                Invalidate();
-            }
-        }
-
-        private void listBoxFireAt_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            Invalidate();
-
-        }
-
-        private void checkBoxDispSpecificTime_CheckedChanged(object sender, EventArgs e)
-        {
-
-            this.Invalidate();
-        }
-
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {
-            this.Invalidate();
-        }
-
-        private void checkBoxHTRoute_CheckedChanged(object sender, EventArgs e)
-        {
-
-            this.Invalidate();
-        }
-
-        private void checkBoxFireAt_CheckedChanged(object sender, EventArgs e)
-        {
-
-            this.Invalidate();
-        }
-
-
-
-        private void MapDisplay_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.X > 512 )
-                return;
-            if (e.Y > 512 )
-                return;
-            double x = e.X  * 10.0/WIDTH+ 1;
-            double y = e.Y * 10.0/WIDTH + 1;
-            x = (int)(x * 100) / 100.0;
-            y = (int)(y * 100) / 100.0;
-            _fireat_items[listBoxFireAt.SelectedIndex] = x + " " + y;
-
-            listBoxFireAt.DataSource = null;
-            listBoxFireAt.DataSource = _fireat_items;
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            String map_name = (string)listBoxMaps.SelectedValue;
-
-            System.IO.StreamWriter file = new System.IO.StreamWriter(TBConst.fireposPath + map_name + ".txt");
-            foreach (string t in _fireat_items)
-            {
-                file.WriteLine(t);
-            }
-            file.Close();
-        }
-
-        private void listBoxStaringPoint_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.Invalidate();
-        }
-
-        private void checkBoxReachable_CheckedChanged(object sender, EventArgs e)
-        {
-            this.Invalidate();
-        }
-
-        private void checkBoxHTRoute2_CheckedChanged(object sender, EventArgs e)
-        {
-            this.Invalidate();
-        }
-
-        private void checkBoxTag_CheckedChanged(object sender, EventArgs e)
-        {
-            this.Invalidate();
-        }
-
-
-
-
-    }
-}
+*/

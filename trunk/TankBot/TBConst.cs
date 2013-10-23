@@ -29,6 +29,7 @@ namespace TankBot
         public static string dataPath = TBConst.wotRootPath + @"res_mods\Data\";
         public static string ahkPath = TBConst.wotRootPath + @"res_mods\key_map.exe";
         public static string logFile = TBConst.wotRootPath + @"tankbot.log";
+        public static string basePath = TBConst.wotRootPath + @"res_mods\base\base.txt";
 
         public static string logFileMessage = TBConst.wotRootPath + @"tankbot_message.log";
         public static string localIP
@@ -63,9 +64,10 @@ namespace TankBot
 
             }
         }
-        public static string trajectoryPath = TBConst.wotRootPath + @"res_mods\trajectory\";
+        public static string trajectoryPath_obsolete = TBConst.wotRootPath + @"res_mods\trajectory\";
         public static string fireposPath = TBConst.wotRootPath + @"res_mods\firepos\";
         public static string tagPath = TBConst.wotRootPath + @"res_mods\tag\";
+        public static string jpgPath = TBConst.wotRootPath + @"res_mods\jpg\";
         public static double noActionRestartMinutes = 10;
 
         public static bool LogMessage = false;
@@ -77,7 +79,7 @@ namespace TankBot
         public static bool noClick = false;
         public static bool noAim = false;
         public static bool noMoveTank = false;
-        public static bool cheatSlaveMode = true;
+        public static bool cheatSlaveMode = false;
         public static bool releaseMode = false;
 
         public static int drawRoutePixelSize = 2;
@@ -128,6 +130,91 @@ namespace TankBot
 
 
 
+
+
+    }
+    public class MapDef
+    {
+        public static Dictionary<string, Tuple<Point, Point>> boundingBox = new Dictionary<string, Tuple<Point, Point>>()
+        {
+            {"01_karelia", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"02_malinovka", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"03_campania", new Tuple<Point,Point> (new Point(-300.0 ,-300.0 ), new Point(300.0 , 300.0))},
+            {"04_himmelsdorf", new Tuple<Point,Point> (new Point(-300.0 ,-300.0 ), new Point(400.0 , 400.0))},
+            {"05_prohorovka", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"06_ensk", new Tuple<Point,Point> (new Point(-300.0 ,-300.0 ), new Point(300.0 , 300.0))},
+            {"07_lakeville", new Tuple<Point,Point> (new Point(-400.0 ,-400.0 ), new Point(400.0 , 400.0))},
+            {"08_ruinberg", new Tuple<Point,Point> (new Point(-400.0 ,-400.0 ), new Point(400.0 , 400.0))},
+            {"10_hills", new Tuple<Point,Point> (new Point(-400.0 ,-400.0 ), new Point(400.0 , 400.0))},
+            {"11_murovanka", new Tuple<Point,Point> (new Point(-400.0 ,-400.0 ), new Point(400.0 , 400.0))},
+            {"13_erlenberg", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"14_siegfried_line", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"15_komarin", new Tuple<Point,Point> (new Point(-400.0 ,-400.0 ), new Point(400.0 , 400.0))},
+            {"17_munchen", new Tuple<Point,Point> (new Point(-300.0 ,-300.0 ), new Point(300.0 , 300.0))},
+            {"18_cliff", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"19_monastery", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"22_slough", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"23_westfeld", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"28_desert", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"29_el_hallouf", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"31_airfield", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"33_fjord", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"34_redshire", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"35_steppes", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"36_fishing_bay", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"37_caucasus", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"38_mannerheim_line", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"39_crimea", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"42_north_america", new Tuple<Point,Point> (new Point(-400.0 ,-430.0 ), new Point(430.0 , 400.0))},
+            {"44_north_america", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"45_north_america", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"47_canada_a", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"60_asia_miao", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"63_tundra", new Tuple<Point,Point> (new Point(-400.0 ,-400.0 ), new Point(400.0 , 400.0))},
+            {"73_asia_korea", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))},
+            {"85_winter", new Tuple<Point,Point> (new Point(-500.0 ,-500.0 ), new Point(500.0 , 500.0))}
+        };
+        public static Dictionary<string, Tuple<Point, Point>> basePos = new Dictionary<string, Tuple<Point, Point>>()
+        {
+            {"01_karelia", new Tuple<Point, Point> ( new Point(397.579529 , 402.584381), new Point( -401.340149 , -400.062683))},
+            {"02_malinovka", new Tuple<Point, Point> ( new Point(75.599945 , -391.920929), new Point( -372.700012 , 108.119667))},
+            {"03_campania", new Tuple<Point, Point> ( new Point(8.663710 , -210.228149), new Point( -0.173965 , 209.417648))},
+            {"04_himmelsdorf", new Tuple<Point, Point> ( new Point(2.499999 , -252.600128), new Point( 69.099937 , 348.999969))},
+            {"05_prohorovka", new Tuple<Point, Point> ( new Point(-125.100014 , 448.300018), new Point( 51.599991 , -447.000000))},
+            {"06_ensk", new Tuple<Point, Point> ( new Point(20.299999 , 249.699997), new Point( 19.099998 , -248.700012))},
+            {"07_lakeville", new Tuple<Point, Point> ( new Point(-169.513458 , 319.351288), new Point( -169.513443 , -319.048615))},
+            {"08_ruinberg", new Tuple<Point, Point> ( new Point(-66.399994 , 306.100006), new Point( -82.900002 , -290.899994))},
+            {"10_hills", new Tuple<Point, Point> ( new Point(175.783722 , -305.848389), new Point( -236.649063 , 329.674500))},
+            {"11_murovanka", new Tuple<Point, Point> ( new Point(202.800003 , 296.099976), new Point( -205.000015 , -292.799988))},
+            {"13_erlenberg", new Tuple<Point, Point> ( new Point(-146.199997 , -0.100014), new Point( 146.399994 , 0.100015))},
+            {"14_siegfried_line", new Tuple<Point, Point> ( new Point(255.799988 , -439.830017), new Point( 283.845886 , 434.601990))},
+            {"15_komarin", new Tuple<Point, Point> ( new Point(160.870193 , -303.957031), new Point( -175.401016 , 304.407318))},
+            {"17_munchen", new Tuple<Point, Point> ( new Point(-83.649483 , -201.658936), new Point( 61.649 , 242.999))},
+            {"18_cliff", new Tuple<Point, Point> ( new Point(-273.786 , -436.601), new Point( -251.606 , 434.591))},
+            {"19_monastery", new Tuple<Point, Point> ( new Point(20.061766 , -387.906860), new Point( -0.393303 , 397.375824))},
+            {"22_slough", new Tuple<Point, Point> ( new Point(-403.600006 , -424.100006), new Point( 383.300018 , 422.700012))},
+            {"23_westfeld", new Tuple<Point, Point> ( new Point(-300.099884 , -339.599976), new Point( 339.399902 , 299.768127))},
+            {"28_desert", new Tuple<Point, Point> ( new Point(373.485199 , -178.960999), new Point( -405.038452 , 137.526276))},
+            {"29_el_hallouf", new Tuple<Point, Point> ( new Point(299.255981 , 319.405975), new Point( -338.583160 , -319.307434))},
+            {"31_airfield", new Tuple<Point, Point> ( new Point(360.648438 , -154.437271), new Point( -324.047974 , -176.182037))},
+            {"33_fjord", new Tuple<Point, Point> ( new Point(399.095856 , -42.143173), new Point( -381.328522 , 111.410522))},
+            {"34_redshire", new Tuple<Point, Point> ( new Point(368.678406 , -269.466949), new Point( -209.877243 , 368.253113))},
+            {"35_steppes", new Tuple<Point, Point> ( new Point(228.220047 , -341.927917), new Point( -88.818558 , 361.861725))},
+            {"36_fishing_bay", new Tuple<Point, Point> ( new Point(-84.829124 , 397.810852), new Point( -17.017586 , -396.105652))},
+            {"37_caucasus", new Tuple<Point, Point> ( new Point(-376.743073 , 371.289215), new Point( 345.804749 , -399.466736))},
+            {"38_mannerheim_line", new Tuple<Point, Point> ( new Point(398.135315 , 293.874969), new Point( -338.180603 , -306.263550))},
+            {"39_crimea", new Tuple<Point, Point> ( new Point(106.300003 , -402.543488), new Point( 114.694191 , 350.556519))},
+            {"42_north_america", new Tuple<Point, Point> ( new Point(-191.100006 , -315.200012), new Point( 318.000000 , 286.299988))},
+            {"44_north_america", new Tuple<Point, Point> ( new Point(-356.987122 , -329.806335), new Point( 300.193024 , 363.934174))},
+            {"45_north_america", new Tuple<Point, Point> ( new Point(197.412552 , 356.577179), new Point( -343.146606 , -327.370056))},
+            {"47_canada_a", new Tuple<Point, Point> ( new Point(-126.886963 , -305.908661), new Point( 213.120361 , 328.109039))},
+            {"60_asia_miao", new Tuple<Point, Point> ( new Point(-46.235470 , 195.650360), new Point( 369.455597 , -65.344101))},
+            {"63_tundra", new Tuple<Point, Point> ( new Point(85.432190 , -167.152176), new Point( -72.202568 , 141.256195))},
+            {"73_asia_korea", new Tuple<Point, Point> ( new Point(271.300 , 252.7), new Point( -270.591 , -298.420))},
+            {"85_winter", new Tuple<Point, Point> ( new Point(209.8 , 353.700), new Point( -171.593 , -308.134))}
+
+
+        };
     }
     public class MapSize
     {

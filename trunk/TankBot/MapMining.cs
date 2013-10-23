@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using Wintellect.PowerCollections;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace TankBot
 {
@@ -74,7 +76,7 @@ namespace TankBot
                 if (_map_name == "")
                     return;
                 this.map_name = _map_name;
-                loadTrajectory();
+                loadTrajectory_obsolete();
                 loadFirepos();
                 loadTag();
                 foreach (Trajectory t in trajs)
@@ -123,16 +125,47 @@ namespace TankBot
         {
             try
             {
-                Bitmap b = new Bitmap(TBConst.tagPath + this.map_name + ".bmp");
-                Dictionary<Color, int> d = new Dictionary<Color, int>();
-                for (int i = 0; i < WIDTH; i++)
-                    for (int j = 0; j < WIDTH; j++)
+                Bitmap bmp = new Bitmap(TBConst.tagPath + this.map_name + ".bmp");
+                
+
+                // Lock the bitmap's bits.  
+                Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+                // Get the address of the first line.
+                IntPtr ptr = bmpData.Scan0;
+
+                // Declare an array to hold the bytes of the bitmap.
+                int bytes = bmpData.Stride * bmp.Height;
+                byte[] rgbValues = new byte[bytes];
+                byte[] r = new byte[bytes / 3];
+                byte[] g = new byte[bytes / 3];
+                byte[] b = new byte[bytes / 3];
+
+                // Copy the RGB values into the array.
+                Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+                int count = 0;
+                int stride = bmpData.Stride;
+
+                for (int column = 0; column < bmpData.Height; column++)
+                {
+                    for (int row = 0; row < bmpData.Width; row++)
                     {
-                        Color c = b.GetPixel(i, j);
-                        if (!d.ContainsKey(c))
-                            d[c] = 0;
-                        d[c]++;
+                        b[count] = (byte)(rgbValues[(column * stride) + (row * 3)]);
+                        g[count] = (byte)(rgbValues[(column * stride) + (row * 3) + 1]);
+                        r[count++] = (byte)(rgbValues[(column * stride) + (row * 3) + 2]);
                     }
+                }
+                Dictionary<Color, int> d = new Dictionary<Color, int>();
+                for (int i = 0; i < r.Length; i++)
+                {
+                    Color c = Color.FromArgb(r[i], g[i], b[i]);
+                    if (!d.ContainsKey(c))
+                        d[c] = 0;
+                    d[c]++;
+                }
+                
                 frequentColor = Color.FromArgb(0, 0, 0);
                 foreach (Color c in d.Keys)
                 {
@@ -142,62 +175,20 @@ namespace TankBot
                         frequentColor = c;
                 }
                 tagMap = new bool[WIDTH, WIDTH];
-                for (int i = 0; i < WIDTH; i++)
-                    for (int j = 0; j < WIDTH; j++)
-                    {
-                        if (b.GetPixel(i, j) == frequentColor)
-                            tagMap[i, j] = true;
-                        else
-                            tagMap[i, j] = false;
-                    }
-                b.Dispose();
+                for (int i = 0; i < r.Length; i++)
+                {
+                    if (Color.FromArgb(r[i], g[i], b[i]) == frequentColor)
+                        tagMap[i % WIDTH, i / WIDTH] = true;
+                    else
+                        tagMap[i % WIDTH, i / WIDTH] = false;
+                }
+                 
+                bmp.Dispose();
             }
             catch
             {
                 Helper.LogException("load tag failed");
             }
-        }
-        private void loadTrajectory()
-        {
-            using (StreamReader sr = new StreamReader(TBConst.trajectoryPath + this.map_name + ".txt"))
-            {
-                int tot_point = 0;
-                while (true)
-                {
-                    if (sr.EndOfStream)
-                        break;
-                    Trajectory traj = new Trajectory();
-                    string comment = sr.ReadLine(); //replay_id 19 user_id 1686
-                    string line = sr.ReadLine(); // 9.8 93.15 9.9 93.0 10.05 92.8 .......
-                    string[] sp = line.Split(' ');
-                    for (int i = 0; i < sp.Length; i += 2)
-                    {
-                        double x = Convert.ToDouble(sp[i]);
-                        double y = Convert.ToDouble(sp[i + 1]);
-                        x = (x + 105) / 21 + 1;
-                        y = (y + 105) / 21 + 1;
-                        traj.add_point(new Point(x, y));
-                    }
-                    traj.comment = comment;
-                    traj = pruneTrajectory(traj, 0.05);
-                    addToHeapmap(traj);
-                    traj.reversed = false;
-                    trajs.Add(traj);
-                    Trajectory rev = new Trajectory();
-                    foreach (Point p in traj)
-                    {
-                        rev.add_point(p);
-                    }
-                    rev.Reverse();
-                    rev.reversed = true;
-                    trajs.Add(rev);
-                    tot_point += traj.Count * 2;
-                }
-                Trace.WriteLine("# if trajectory " + trajs.Count);
-                Trace.WriteLine("total trajectory point " + tot_point);
-
-            }
-
         }
         public void addToHeatmap(int x, int y)
         {
@@ -282,7 +273,7 @@ namespace TankBot
         /// add the trajectory to the WIDTH * WIDTH heat map
         /// </summary>
         /// <param name="traj"></param>
-        private void addToHeapmap(Trajectory traj)
+        private void addToHeapmap_obsolete(Trajectory traj)
         {
             for (int i = 1; i < traj.Count; i++)
             {
@@ -350,26 +341,34 @@ namespace TankBot
         /// <returns></returns>
         public Point enemyBase(Point startPoint)
         {
-            ArrayList points = new ArrayList();
-            foreach (Trajectory t in trajs)
+            try
             {
-                if (TBMath.distance(t[0], startPoint) > 4)
+
+                using (System.IO.StreamReader sr = new StreamReader(TBConst.basePath))
                 {
-                    points.Add(t[0]);
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+                        if (line.StartsWith(this.map_name))
+                        {
+                            Point p1 = MapDef.basePos[this.map_name].Item1;
+                            Point p2 = MapDef.basePos[this.map_name].Item2;
+                            
+                            p1 = TBMath.BigWorldPos2MinimapPos(p1, map_name);
+                            p2 = TBMath.BigWorldPos2MinimapPos(p2, map_name);
+                            if (TBMath.distance(startPoint, p1) < TBMath.distance(startPoint, p2))
+                                return p2;
+                            else
+                                return p1;
+                        }
+                    }
                 }
             }
-            if (points.Count == 0)
-                return new Point(0, 0);
-            double[] px = new double[points.Count];
-            double[] py = new double[points.Count];
-            for (int i = 0; i < points.Count; i++)
+            catch
             {
-                px[i] = ((Point)points[i]).x;
-                py[i] = ((Point)points[i]).y;
+                throw new EnemyBaseReadException();
             }
-            Array.Sort(px);
-            Array.Sort(py);
-            return new Point(px[px.Length / 2], py[py.Length / 2]);
+            throw new EnemyBaseReadException();
         }
 
         /// <summary>
@@ -394,13 +393,13 @@ namespace TankBot
 
 
 
-        public void dijkstra(int sx, int sy, int threshhold = 2, bool usingTagMap = false)
+        public void BFS(int sx, int sy, int threshhold = 2)
         {
             visit = new bool[WIDTH, WIDTH];
             score = new double[WIDTH, WIDTH];
             prev = new Tuple<int, int>[WIDTH, WIDTH];
-            OrderedBag<Tuple<double, Tuple<int, int>>> q = new OrderedBag<Tuple<double, Tuple<int, int>>>();
-            q.Add(new Tuple<double, Tuple<int, int>>(1, new Tuple<int, int>(sx, sy)));
+            Queue<Tuple<double, Tuple<int, int>>> q = new Queue<Tuple<double, Tuple<int, int>>>();
+            q.Enqueue(new Tuple<double, Tuple<int, int>>(1, new Tuple<int, int>(sx, sy)));
 
 
             List<int> dx = new List<int>();
@@ -412,15 +411,16 @@ namespace TankBot
                     dy.Add(j);
                 }
             int loop = 0;
+            bool visitTag = false;
             while (q.Count > 0)
             {
-                Tuple<double, Tuple<int, int>> min = q.GetFirst();
+                Tuple<double, Tuple<int, int>> min = q.First();
 
                 int x = min.Item2.Item1;
                 int y = min.Item2.Item2;
                 if (visit[x, y])
                 {
-                    q.RemoveFirst();
+                    q.Dequeue();
                     continue;
                 }
                 loop++;
@@ -439,31 +439,27 @@ namespace TankBot
                     if (ny >= WIDTH) continue;
                     if (visit[nx, ny])
                         continue;
-                    int dis;
-                    if (usingTagMap)
+
+                    if (tagMap[nx, ny])
                     {
-                        if (tagMap[nx, ny])
-                            dis = 1;
-                        else
-                            dis = 1000;
+                        visitTag = true;
                     }
                     else
                     {
-                        dis = 1000 - heatmap[nx, ny];
-                        if (heatmap[nx, ny] == 0)
-                            dis = 3000;
-                        if (dis < 0) dis = 0;
+                        if (visitTag)
+                            continue;
                     }
-                    double newscore = score[x, y] + dis;
+                   
+                    double newscore = score[x, y] + 1;
                     double oldscore = score[nx, ny];
                     if (oldscore == 0 || oldscore > newscore)
                     {
                         score[nx, ny] = newscore;
                         prev[nx, ny] = new Tuple<int, int>(x, y);
-                        q.Add(new Tuple<double, Tuple<int, int>>(newscore, new Tuple<int, int>(nx, ny)));
+                        q.Enqueue(new Tuple<double, Tuple<int, int>>(newscore, new Tuple<int, int>(nx, ny)));
                     }
                 }
-                q.RemoveFirst();
+                q.Dequeue();
             }
         }
         private Trajectory backtrace(Point source, Point target)
@@ -512,7 +508,7 @@ namespace TankBot
         public Trajectory genRouteTagMap(Point source, Point target)
         {
 
-            dijkstra(d2i(source.x), d2i(source.y), 1, true);
+            BFS(d2i(source.x), d2i(source.y), 1);
             return backtrace(source, target);
         }
         public Trajectory genRouteToFireposTagMap(Point source)
@@ -526,6 +522,49 @@ namespace TankBot
 
         #region obsolete
 
+        private void loadTrajectory_obsolete()
+        {
+            using (StreamReader sr = new StreamReader(TBConst.trajectoryPath_obsolete + this.map_name + ".txt"))
+            {
+                int tot_point = 0;
+                while (true)
+                {
+                    if (sr.EndOfStream)
+                        break;
+                    Trajectory traj = new Trajectory();
+                    string comment = sr.ReadLine(); //replay_id 19 user_id 1686
+                    string line = sr.ReadLine(); // 9.8 93.15 9.9 93.0 10.05 92.8 .......
+                    string[] sp = line.Split(' ');
+                    for (int i = 0; i < sp.Length; i += 2)
+                    {
+                        double x = Convert.ToDouble(sp[i]);
+                        double y = Convert.ToDouble(sp[i + 1]);
+                        x = (x + 105) / 21 + 1;
+                        y = (y + 105) / 21 + 1;
+                        traj.add_point(new Point(x, y));
+                        break;
+                    }
+                    traj.comment = comment;
+                    traj = pruneTrajectory(traj, 0.05);
+                    addToHeapmap_obsolete(traj);
+                    traj.reversed = false;
+                    trajs.Add(traj);
+                    Trajectory rev = new Trajectory();
+                    foreach (Point p in traj)
+                    {
+                        rev.add_point(p);
+                    }
+                    rev.Reverse();
+                    rev.reversed = true;
+                    trajs.Add(rev);
+                    tot_point += traj.Count * 2;
+                }
+                Trace.WriteLine("# if trajectory " + trajs.Count);
+                Trace.WriteLine("total trajectory point " + tot_point);
+
+            }
+
+        }
         /// <summary>
         /// generate the route from start point to 
         /// </summary>
@@ -539,7 +578,7 @@ namespace TankBot
         public Trajectory genRoute_obsolete(Point source, Point target, int threshhold)
         {
 
-            dijkstra(d2i(source.x), d2i(source.y), threshhold);
+            BFS(d2i(source.x), d2i(source.y), threshhold);
             return backtrace(source, target);
         }
 

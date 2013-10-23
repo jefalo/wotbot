@@ -316,7 +316,8 @@ namespace TankBot
             if (TBConst.LogInfo)
                 Log("[INFO]", lines);
             
-            mainForm.setTextLog(lines, true);
+            if(mainForm!=null)
+                mainForm.setTextLog(lines, true);
         }
         static public MainForm mainForm;
         static public void LogException(String lines)
@@ -560,6 +561,15 @@ namespace TankBot
             while (degree_diff > 180)
                 degree_diff -= 360;
             return degree_diff;
+        }
+
+
+        internal static Point BigWorldPos2MinimapPos(Point p, string map_name)
+        {
+            double scale = MapSize.map_size[map_name] * 10;
+            double boundX = MapDef.boundingBox[map_name].Item1.x;
+            double boundY = MapDef.boundingBox[map_name].Item2.y;
+            return new Point((p.x - boundX) / scale * 10 + 1, (-p.y + boundY ) / scale * 10 + 1);
         }
     }
     class SniperMode

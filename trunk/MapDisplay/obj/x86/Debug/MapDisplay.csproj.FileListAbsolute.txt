@@ -11,3 +11,5 @@ D:\Dropbox\code\TankBot\MapDisplay\obj\x86\Debug\MapDisplay.exe
 D:\Dropbox\code\TankBot\MapDisplay\obj\x86\Debug\MapDisplay.pdb
 D:\Dropbox\code\TankBot\MapDisplay\bin\Debug\PowerCollections.dll
 D:\Dropbox\code\TankBot\MapDisplay\bin\Debug\PowerCollections.pdb
+C:\wotdbg\res_mods\MapDisplay.exe
+C:\wotdbg\res_mods\MapDisplay.pdb
