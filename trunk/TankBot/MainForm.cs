@@ -68,6 +68,8 @@ namespace TankBot
         }
         public void setTextLog(string text, bool append)
         {
+            if (TBConst.releaseMode)
+                return;
             if(append)
             {
                 setTextLog(textBoxLog.Text + "\r\n" + text);
@@ -77,6 +79,8 @@ namespace TankBot
         delegate void SetTextCallback(string text);
         public void setText(string text)
         {
+            if (TBConst.releaseMode)
+                return;
             if (this.textBox1.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(setText);
@@ -149,7 +153,7 @@ namespace TankBot
                 drawPoint(t, g, Color.Aqua, TBConst.drawRoutePixelSize);
             if (tankBot.nextRoutePoint < tankBot.route.Count)
                 drawPoint(tankBot.route[tankBot.nextRoutePoint], g, Color.Aqua, TBConst.nextRouteSize);
-            drawPoint(tankBot.enemyBase, g, Color.Gray, TBConst.enemyBaseSize);
+            drawPoint(tankBot.enemyBase, g, Color.Gray, TBConst.enemyBaseDrawPointSize);
 
             panel_minimap.CreateGraphics().DrawImage(bitmap, new PointF(0, 0));
             back_graph.Dispose();
@@ -159,6 +163,8 @@ namespace TankBot
 
         public void paint()
         {
+            if (TBConst.releaseMode)
+                return;
             try
             {
                 paintMinimap();

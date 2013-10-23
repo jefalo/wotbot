@@ -354,6 +354,7 @@ namespace TankBot
         public int messageCnt = 0;
         public void processMessage(string message)
         {
+            
             messageCnt++;
 
             Helper.LogMessage(message);
@@ -484,18 +485,25 @@ namespace TankBot
             while (true)
             {
                 client = tcpListener.AcceptTcpClient();
+
+                Helper.LogInfo("connection established from: " + ((IPEndPoint) client.Client.RemoteEndPoint).Address);
                 NetworkStream clientStream = client.GetStream();
                 byte[] msg = new byte[4096];
                 int bytesRead;
                 string message = "";
+
+                int cc = 0;
                 while (true)
                 {
+                    cc++;
+                    
                     try
                     {
                         bytesRead = clientStream.Read(msg, 0, 4096);
                     }
                     catch
                     {
+                    
                         break;
                     }
                     if (bytesRead == 0)

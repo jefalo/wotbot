@@ -178,9 +178,9 @@ namespace TankBot
             GetClientRect(handle, out client);
             if (client.Right != 1280 || client.Bottom != 768)
             {
-                Helper.LogInfo("client Height and Width is not 1280x768");
-                MessageBox.Show("client Height and Width is not 1280x768");
-                Environment.Exit(0);
+                Helper.LogException("client Height and Width is not 1280x768");
+                //MessageBox.Show("client Height and Width is not 1280x768");
+                //Environment.Exit(0);
             }
 
             Thread.Sleep(20);
@@ -262,19 +262,19 @@ namespace TankBot
             {
                 try
                 {
-                    if (file == null) file = new System.IO.StreamWriter(TBConst.logFile_d);
+                    if (file == null) file = new System.IO.StreamWriter(TBConst.logFile);
                 }
                 catch
                 {
-                    Helper.LogException(" open log file error " + TBConst.logFile_d);
+                    Helper.LogException(" open log file error " + TBConst.logFile);
                 }
                 try
                 {
-                    if (filemessage == null) filemessage = new System.IO.StreamWriter(TBConst.logFileMessage_d);
+                    if (filemessage == null) filemessage = new System.IO.StreamWriter(TBConst.logFileMessage);
                 }
                 catch
                 {
-                    Helper.LogException(" open log file error " + TBConst.logFileMessage_d);
+                    Helper.LogException(" open log file error " + TBConst.logFileMessage);
                 }
                 try
                 {

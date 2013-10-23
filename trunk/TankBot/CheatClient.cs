@@ -44,6 +44,20 @@ namespace TankBot
                 }
             return false;
         }
+        DateTime lastTry = DateTime.Now;
+
+        private void reconnect()
+        {
+            try
+            {
+                client = new TcpClient();
+                IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(TBConst.cheatServerIp), TBConst.cheatServerPort);
+                client.Connect(serverEndPoint);
+            }
+            catch
+            {
+            }
+        }
         public void sendCheatMessage(string message)
         {
 
@@ -57,14 +71,11 @@ namespace TankBot
             catch
             {
                 Helper.LogDebug("send message failed.. trying to reconnect");
-                try
+                if ((DateTime.Now - lastTry).TotalSeconds > 10)
                 {
-                    client = new TcpClient();
-                    IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(TBConst.cheatServerIp), TBConst.cheatServerPort);
-                    client.Connect(serverEndPoint);
-                }
-                catch
-                {
+                    lastTry = DateTime.Now;
+                    new Thread(new ThreadStart(reconnect)).Start();
+
                 }
             }
         }
@@ -109,6 +120,7 @@ namespace TankBot
                     Helper.key_press("n", Helper.KEY_TYPE.PRESS);
                     Helper.key_press("n", Helper.KEY_TYPE.PRESS);
                     Helper.key_press("n", Helper.KEY_TYPE.PRESS);
+                    TankAction.clickTank(Convert.ToInt32("" + message[message.Length - 1]));
                     TankAction.clickTank(Convert.ToInt32("" + message[message.Length - 1]));
                 }
                 if (message == "die" )

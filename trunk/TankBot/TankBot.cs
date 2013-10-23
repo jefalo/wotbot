@@ -96,7 +96,7 @@ namespace TankBot
 
         public void Clear()
         {
-            Helper.LogInfo("tankbot clear");
+            Helper.LogDebug("tankbot clear");
             mapName = "";
             startPos.Clear();
             enemyBase.Clear();
@@ -399,8 +399,6 @@ namespace TankBot
             SniperMode.resetSniperLevel();
             while (true)
             {
-                if (noAimMove())
-                    break;
                 if (status != Status.PLAYING)
                     break;
                 try
@@ -621,8 +619,15 @@ namespace TankBot
         {
             while (true)
             {
-                if (noAimMove())
+                if (noAimMove() && TBMath.distance(myTank.pos, startPos) > 1)
+                {
+                    Helper.key_press("s", Helper.KEY_TYPE.PRESS);
+                    Helper.key_press("s", Helper.KEY_TYPE.PRESS);
+                    Helper.key_press("s", Helper.KEY_TYPE.PRESS);
+                    Helper.key_press("a", Helper.KEY_TYPE.UP);
+                    Helper.key_press("d", Helper.KEY_TYPE.UP);
                     break;
+                }
                 if (status == Status.QUEUING || status == Status.COUNT_DOWN || status == Status.PLAYING)
                 {
                 }
@@ -701,6 +706,7 @@ namespace TankBot
             this.mapSacle = MapSize.map_size[mapName];
 
             mapMining = new MapMining(this.mapName);
+            
             this.enemyBase = mapMining.enemyBase(myTank.pos);
 
             //if (myTank.vInfo.vClass == VehicleClass.HT)

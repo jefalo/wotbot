@@ -10,15 +10,17 @@ namespace TankBot
 {
     public class TBConst
     {
+        public static string version = "42";
+
         public static bool RealBattle = true;
-        static string _wotRootPath="";
+        static string _wotRootPath = "";
         public static string wotRootPath
         {
             get
             {
                 if (_wotRootPath == "")
                 {
-                    _wotRootPath = Directory.GetParent(Directory.GetCurrentDirectory()).ToString() +"\\";
+                    _wotRootPath = Directory.GetParent(Directory.GetCurrentDirectory()).ToString() + "\\";
                     //Helper.LogInfo("set root path" + _wotRootPath);
                 }
                 return _wotRootPath;
@@ -26,9 +28,9 @@ namespace TankBot
         }
         public static string dataPath = TBConst.wotRootPath + @"res_mods\Data\";
         public static string ahkPath = TBConst.wotRootPath + @"res_mods\key_map.exe";
-        public static string logFile_d = TBConst.wotRootPath + @"tankbot.log";
+        public static string logFile = TBConst.wotRootPath + @"tankbot.log";
 
-        public static string logFileMessage_d = TBConst.wotRootPath + @"tankbot_message.log";
+        public static string logFileMessage = TBConst.wotRootPath + @"tankbot_message.log";
         public static string localIP
         {
             get
@@ -58,7 +60,7 @@ namespace TankBot
                     return TBConst.wotRootPath + @"res_mods\config\tank_carousel_order.ini";
                 Helper.LogException("config file not exist");
                 return "";
-                
+
             }
         }
         public static string trajectoryPath = TBConst.wotRootPath + @"res_mods\trajectory\";
@@ -75,19 +77,20 @@ namespace TankBot
         public static bool noClick = false;
         public static bool noAim = false;
         public static bool noMoveTank = false;
-        public static bool cheatSlaveMode = false;
+        public static bool cheatSlaveMode = true;
+        public static bool releaseMode = false;
 
         public static int drawRoutePixelSize = 2;
         public static int nextRouteSize = 8;
         public static double distancePenalty = 4;
         public static int aimingDelay = 100;
-        public static int enemyBaseSize = 20;
+        public static int enemyBaseDrawPointSize = 20;
         public static string cheatServerIp
         {
             get
             {
-                string ip=localIP;
-                string [] s=ip.Split('.');
+                string ip = localIP;
+                string[] s = ip.Split('.');
                 s[2] = "148";
                 s[3] = "138";
                 return string.Join(".", s);
@@ -125,7 +128,6 @@ namespace TankBot
 
 
 
-        public static string version = "33";
     }
     public class MapSize
     {
