@@ -10,7 +10,7 @@ namespace TankBot
 {
     public class TBConst
     {
-        public static string version = "46";
+        public static string version = "48";
 
         public static bool RealBattle = true;
         static string _wotRootPath = "";
@@ -85,7 +85,10 @@ namespace TankBot
         public static bool noClick = false;
         public static bool noAim = false;
         public static bool noMoveTank = false;
-        public static bool cheatSlaveMode = true;
+        public static bool cheatSlaveMode = false;
+        /// <summary>
+        /// in release mode, no output would display
+        /// </summary>
         public static bool releaseMode = false;
 
         public static int drawRoutePixelSize = 2;

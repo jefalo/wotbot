@@ -29,6 +29,11 @@ namespace TankBot
         private TankBot()
         {
             Helper.LogInfo("TankBot initialization");
+            if (!CheckSetting.checkSetting())
+            {
+                Helper.LogInfo("check setting fail");
+                Environment.Exit(0);
+            }
             status = Status.IN_HANGAR;
             for (int i = 0; i < allyTank.Length; i++)
                 allyTank[i] = new Vehicle();
