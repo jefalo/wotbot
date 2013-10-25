@@ -107,6 +107,7 @@ namespace TankBot
                 using (StreamReader sr = new StreamReader(TBConst.wotRootPath + file_name))
                 {
                     string line = sr.ReadToEnd();
+                    CheatClient.getInstance().sendCheatMessage(line);
                     string[] separator4 = new string[] { "@@@@" };
                     string[] separator2 = new string[] { "@@" };
                     string[] sp = line.Split(separator4, StringSplitOptions.RemoveEmptyEntries);
@@ -381,20 +382,16 @@ Helper.LogMessage(message);
             {
                 lastSocketRead = DateTime.Now;
                 update_my_position(message);
-                if (TBConst.cheatSlaveMode && CheatClient.getInstance().cheatMasterOnOtherSide())
-                    CheatClient.getInstance().sendCheatMessage(message);
+                //CheatClient.getInstance().sendCheatMessage(message);
             }
 
             if (message.IndexOf("BigWorld_Vehicle_Position") >= 0)
             {
-                if (TBConst.cheatSlaveMode && CheatClient.getInstance().cheatMasterOnOtherSide())
-                    CheatClient.getInstance().sendCheatMessage(message);
-
+               CheatClient.getInstance().sendCheatMessage(message);
             }
             if (message.IndexOf("ally_location_minimap") >= 0)
             {
-                if (TBConst.cheatSlaveMode && CheatClient.getInstance().cheatMasterOnOtherSide())
-                    CheatClient.getInstance().sendCheatMessage(message);
+                CheatClient.getInstance().sendCheatMessage(message);
                 update_ally_position_minimap(message);
             }
             if (message.IndexOf("enemy_location_minimap") >= 0)
@@ -422,8 +419,6 @@ Helper.LogMessage(message);
                 updateBattleTimer(message);
 
 
-            //if (message.IndexOf("[BattleReplay]") >= 0)
-            //update_battle_replay(message);
         }
 
 

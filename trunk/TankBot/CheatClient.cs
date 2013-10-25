@@ -14,8 +14,6 @@ namespace TankBot
         static private CheatClient instance = null;
         static public CheatClient getInstance()
         {
-            if (!TBConst.cheatSlaveMode)
-                return null;
             if (instance == null)
                 instance = new CheatClient();
             return instance;
@@ -59,6 +57,11 @@ namespace TankBot
         }
         public void sendCheatMessage(string message)
         {
+
+            if (!TBConst.cheatSlaveMode)
+                return ;
+            if (!cheatMasterOnOtherSide())
+                return ;
             try
             {
                 message = "map_name: " + TankBot.getInstance().mapName + " " + message +"<EOF>";
