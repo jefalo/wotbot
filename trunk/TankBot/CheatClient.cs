@@ -102,7 +102,7 @@ namespace TankBot
 
                 string message = returnData.ToString();
 
-                Helper.LogInfo("get cheat message" + message);
+                Helper.LogInfo("get cheat message:" + message);
                 if (message == "startin10s")
                 {
                     Thread.Sleep(9000);
