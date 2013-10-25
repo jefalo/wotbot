@@ -903,6 +903,7 @@ namespace TankBot
                     Helper.LogInfo("press esc to eliminate battle results");
                     Thread.Sleep(5000);
                     //ESC
+                    Helper.bringToFront();
                     Helper.keyPress("b", Helper.KEY_TYPE.PRESS);
                     Thread.Sleep(1000);
                     status = Status.IN_HANGAR;

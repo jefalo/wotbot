@@ -136,6 +136,7 @@ namespace TankBot
         public static int windowX;
         public static int windowY;
         public static int pid;
+        public static IntPtr wotHandle;
 
 
 

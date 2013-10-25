@@ -290,6 +290,12 @@ namespace TankBot
         {
             Helper.keyPress("m", Helper.KEY_TYPE.PRESS);
         }
+
+        internal static void bringToFront()
+        {
+            SetForegroundWindow(TBConst.wotHandle);
+            Thread.Sleep(100);
+        }
     }
     public struct PointINT
     {
