@@ -24,7 +24,6 @@ namespace TankBot
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             // connect xvm_comm with this form in order to draw/debug 
             XvmComm.getInstance().mainForm = this;
             Helper.mainForm = this;
@@ -40,6 +39,8 @@ namespace TankBot
             if (Screen.AllScreens.Length == 2)
                 this.Location = new System.Drawing.Point(-1280, 0);
             Main.init();
+
+            updateSlaveMode();
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -185,6 +186,18 @@ namespace TankBot
         private void btnStop_Click(object sender, EventArgs e)
         {
             Main.abortTankBot();
+        }
+        private void updateSlaveMode()
+        {
+            if (checkSlaveMode.Checked)
+                TBConst.cheatSlaveMode = true;
+            else
+                TBConst.cheatSlaveMode = false;
+            Helper.LogInfo("cheat slave mode: " + TBConst.cheatSlaveMode);
+        }
+        private void checkSlaveMode_CheckedChanged(object sender, EventArgs e)
+        {
+            updateSlaveMode();
         }
 
 

@@ -33,6 +33,7 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.textBoxLog = new System.Windows.Forms.TextBox();
+            this.checkSlaveMode = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -70,18 +71,30 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // texInfo
+            // textBoxLog
             // 
             this.textBoxLog.Location = new System.Drawing.Point(509, 12);
             this.textBoxLog.Multiline = true;
-            this.textBoxLog.Name = "texInfo";
+            this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.Size = new System.Drawing.Size(487, 706);
             this.textBoxLog.TabIndex = 9;
+            // 
+            // checkSlaveMode
+            // 
+            this.checkSlaveMode.AutoSize = true;
+            this.checkSlaveMode.Location = new System.Drawing.Point(360, 108);
+            this.checkSlaveMode.Name = "checkSlaveMode";
+            this.checkSlaveMode.Size = new System.Drawing.Size(78, 16);
+            this.checkSlaveMode.TabIndex = 10;
+            this.checkSlaveMode.Text = "slaveMode";
+            this.checkSlaveMode.UseVisualStyleBackColor = true;
+            this.checkSlaveMode.CheckedChanged += new System.EventHandler(this.checkSlaveMode_CheckedChanged);
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1031, 730);
+            this.Controls.Add(this.checkSlaveMode);
             this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
@@ -104,6 +117,7 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
         public System.Windows.Forms.TextBox textBoxLog;
+        private System.Windows.Forms.CheckBox checkSlaveMode;
     }
 }
 
