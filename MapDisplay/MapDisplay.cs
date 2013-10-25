@@ -105,13 +105,6 @@ namespace TankBot
                 }
                 else if (checkBoxLoadRoute.Checked)
                 {
-                    /*
-                    for(int i=0; i<WIDTH; i++)
-                        for(int j=0; j<WIDTH; j++)
-                            if (mapMining.tagMap[i, j] ==true)
-                                draw_point(new Point(MapMining.i2d(i), MapMining.i2d(j)), 1.0f, Brushes.Blue, e.Graphics);
-                    return;
-                     * */
                     Trajectory t=mapMining.genRouteToFireposTagMap(this.startPoint);
                     foreach (Point p in t)
                     {
@@ -129,20 +122,7 @@ namespace TankBot
                 {
                 }
 
-                /*
-                Point ip = mapMining.getInterestPoint(new Point(8.96, 2.89), 150);
-                if (ip != null)
-                {
-                    
-                    draw_point(ip, 50.0f, Brushes.White, e.Graphics);
-                }
-                Point eb = mapMining.enemyBase(new Point(8.96, 2.89));
-                if (eb != null)
-                {
-                    
-                    draw_point(eb, 50.0f, Brushes.Green, e.Graphics);
-                }
-                 */
+
             }
 
         }
@@ -247,80 +227,3 @@ namespace TankBot
     }
 }
 
-/*obsolete
-              
-                if (checkBoxReachable.Checked)
-                {
-
-                    int m=0;
-                    for (int i = 0; i < MapMining.WIDTH; i++)
-                    {
-                        for (int j = 0; j < MapMining.WIDTH; j++)
-                        {
-                            m = Math.Max(m, mapMining.heatmap[i, j]);
-                        }
-                    }
-
-                    for (int i = 0; i < MapMining.WIDTH; i++)
-                    {
-                        for (int j = 0; j < MapMining.WIDTH; j++)
-                        {
-                            if (mapMining.heatmap[i, j] > 0 )
-                            {
-                                int c=mapMining.heatmap[i,j] * 255 / 80;
-                                if (c > 255)
-                                    c = 255;
-                                Brush b= new SolidBrush(Color.FromArgb(c,c,c));
-                                draw_point(new Point(MapMining.i2d(i), MapMining.i2d(j)), 1.0f, b, e.Graphics);
-                            }
-                        }
-                    }
-
-                }
-
-                  else if (checkBoxTag.Checked)
-                {
-                    Point startPoint = (Point)mapMining.startPoints[listBoxStaringPoint.SelectedIndex];
-                    Trajectory t = mapMining.genRouteToFireposTagMap(startPoint);
-
-
-                    draw_point(startPoint, 10.0f, Brushes.White, e.Graphics);
-                    foreach (Point p in t)
-                    {
-                        draw_point(p, 3.0f, Brushes.Blue, e.Graphics);
-
-                    }
-                }
-                else if (checkBoxHTRoute2.Checked)
-                {
-                    Trajectory t = mapMining.genRouteToFirepos_osbolete(startPoint);
-
-                    draw_point(startPoint, 10.0f, Brushes.White, e.Graphics);
-                    foreach (Point p in t)
-                    {
-                        draw_point(p, 3.0f, Brushes.Blue, e.Graphics);
-
-                    }
-                }
-
-                else if (checkBoxDispSpecificTime.Checked)
-                {
-                    foreach (Trajectory t in mapMining.trajs)
-                    {
-                        if (t.reversed == false)
-                            if (vScrollBar1.Value < t.Count)
-                            {
-                                Point p = (Point)t[vScrollBar1.Value];
-                                if(mapMining.withinTagMap(p))
-                                {
-                                    draw_point(p, 5.0f, Brushes.Blue, e.Graphics);
-                                }
-                                else
-                                {
-                                       draw_point(p, 10.0f, Brushes.Red, e.Graphics);
-                                }
-                            }
-                    }
-                }
-
-*/

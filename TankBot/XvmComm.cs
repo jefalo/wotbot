@@ -356,8 +356,7 @@ namespace TankBot
         {
             
             messageCnt++;
-
-            Helper.LogMessage(message);
+Helper.LogMessage(message);
             //if (message.IndexOf("BigWorld_Vehicle_Position") >= 0)
             
             List<string> keywords = new List<string>();

@@ -260,13 +260,7 @@ namespace TankBot
             
             if (c.Length == 1)
             {
-                /*
-                if (type == KEY_TYPE.DOWN && c[0] == 'a' && a_pressed == true) return;
-                if (type == KEY_TYPE.DOWN && c[0] == 'd' && d_pressed == true) return;
 
-                if (type == KEY_TYPE.UP && c[0] == 'a' && a_pressed == false) return;
-                if (type == KEY_TYPE.UP && c[0] == 'd' && d_pressed == false) return;
-                */
 
 
                 byte b;
