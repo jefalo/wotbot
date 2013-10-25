@@ -75,33 +75,33 @@ namespace TankBot
             Process process = processes[0];
             Helper.LogInfo("worldoftanks.exe with pid " + process.Id);
             TBConst.pid = process.Id;
-            IntPtr handle = process.MainWindowHandle;
+            TBConst.wotHandle = process.MainWindowHandle;
             RECT rct;
             int width;
             int height;
-            Helper.GetWindowRect(new HandleRef(null, handle), out rct);
+            Helper.GetWindowRect(new HandleRef(null, TBConst.wotHandle), out rct);
             width = rct.Right - rct.Left;
             height = rct.Bottom - rct.Top;
 
             RECT client;
 
-            Helper.GetClientRect(handle, out client);
+            Helper.GetClientRect(TBConst.wotHandle, out client);
             Helper.LogInfo("client.right  " + client.Right + " client.bottom " + client.Bottom);
             width += 1280 - client.Right;
             height += 768 - client.Bottom;
 
             PointINT p = new PointINT(0, 0);
-            Helper.ClientToScreen(handle, ref p);
+            Helper.ClientToScreen(TBConst.wotHandle, ref p);
             // correct the window size
             if (client.Right != 1280 || client.Bottom != 768)
             {
                 Helper.LogInfo("client height and width not correct. correcting it");
 
-                Helper.MoveWindow(handle, rct.Left, rct.Top, width, height, false);
+                Helper.MoveWindow(TBConst.wotHandle, rct.Left, rct.Top, width, height, false);
             }
             Helper.LogInfo("width " + width + " height " + height);
 
-            Helper.GetClientRect(handle, out client);
+            Helper.GetClientRect(TBConst.wotHandle, out client);
             if (client.Right != 1280 || client.Bottom != 768)
             {
                 Helper.LogException("client Height and Width is not 1280x768");
