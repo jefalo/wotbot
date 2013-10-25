@@ -53,18 +53,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClickOrderTest.cs" />
-    <Compile Include="ConstTest.cs" />
-    <Compile Include="MapMiningTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RateCountTest.cs" />
-    <Compile Include="TankBotTest.cs" />
-    <Compile Include="TBConstTest.cs" />
-    <Compile Include="UnitTest1.cs" />
-    <Compile Include="Xvm_commTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Shadow Include="测试引用\TankBot.accessor" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TankBot\TankBot.csproj">
