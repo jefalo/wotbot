@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheatClient.cs" />
+    <Compile Include="CheckSetting.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="SniperMode.cs" />
