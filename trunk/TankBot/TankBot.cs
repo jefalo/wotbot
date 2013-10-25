@@ -444,6 +444,8 @@ namespace TankBot
                 }
                 catch (CannotAimException)
                 {
+                    Helper.LogDebug("CannotAimException catch");
+                    bestAim = -1;
                 }
 
             }
