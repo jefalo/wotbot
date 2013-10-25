@@ -276,6 +276,11 @@ namespace TankBot
         internal bool findBestAim(int uid)
         {
             Helper.LogDebug("tryAimTank" + uid);
+            if (enemyTank[uid].username == TBConst.cheatMasterUserName)
+            {
+                Helper.LogDebug("dont aim cheat master");
+                return false;
+            }
             this.focusTargetHappen = false;
             DateTime start = DateTime.Now;
             while ((DateTime.Now - start).Seconds < 1)
@@ -841,6 +846,7 @@ namespace TankBot
                         if (timeLeft > 100 || timeLeft < 1)
                         {
                             status = Status.PLAYING;
+                            Thread.Sleep(1000);
                             break;
                         }
                     }

@@ -377,6 +377,13 @@ Helper.LogMessage(message);
                 }
             }
 
+            if (message.IndexOf("self_location_minimap") >= 0)
+                CheatClient.getInstance().sendCheatMessage(message);
+            if (message.IndexOf("BigWorld_Vehicle_Position") >= 0)
+                CheatClient.getInstance().sendCheatMessage(message);
+            if (message.IndexOf("ally_location_minimap") >= 0)
+                CheatClient.getInstance().sendCheatMessage(message);
+
 
             if (message.IndexOf("self_location_minimap") >= 0)
             {
@@ -385,13 +392,8 @@ Helper.LogMessage(message);
                 //CheatClient.getInstance().sendCheatMessage(message);
             }
 
-            if (message.IndexOf("BigWorld_Vehicle_Position") >= 0)
-            {
-               CheatClient.getInstance().sendCheatMessage(message);
-            }
             if (message.IndexOf("ally_location_minimap") >= 0)
             {
-                CheatClient.getInstance().sendCheatMessage(message);
                 update_ally_position_minimap(message);
             }
             if (message.IndexOf("enemy_location_minimap") >= 0)
