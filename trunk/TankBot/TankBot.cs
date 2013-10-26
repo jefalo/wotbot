@@ -10,10 +10,6 @@ using System.Windows.Forms;
 
 namespace TankBot
 {
-
-
-
-   
     class TankBot
     {
         #region Singleton
