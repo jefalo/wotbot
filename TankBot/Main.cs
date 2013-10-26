@@ -105,6 +105,8 @@ namespace TankBot
                 MessageBox.Show("F3 reg fail");
                 Environment.Exit(0);
             }
+            if (TBConst.autoStart)
+                Main.startTankBot();
         }
         static Hotkey hotkeyF3, hotkeyF2;
         public static Form mainForm;

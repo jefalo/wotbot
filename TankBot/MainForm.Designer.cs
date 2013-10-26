@@ -82,8 +82,6 @@
             // checkSlaveMode
             // 
             this.checkSlaveMode.AutoSize = true;
-            this.checkSlaveMode.Checked = true;
-            this.checkSlaveMode.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkSlaveMode.Location = new System.Drawing.Point(360, 108);
             this.checkSlaveMode.Name = "checkSlaveMode";
             this.checkSlaveMode.Size = new System.Drawing.Size(78, 16);
