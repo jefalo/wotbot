@@ -140,6 +140,8 @@ namespace TankBot
 
 
 
+        public static bool autoStart = false;
+
 
 
     }
