@@ -187,6 +187,13 @@ namespace TankBot
         {
             Main.abortTankBot();
         }
+        private void initSlaveMode()
+        {
+            if (TBConst.cheatSlaveMode)
+                checkSlaveMode.Checked = true;
+            else
+                checkSlaveMode.Checked = false;
+        }
         private void updateSlaveMode()
         {
             if (checkSlaveMode.Checked)
