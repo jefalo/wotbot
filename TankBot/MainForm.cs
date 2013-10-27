@@ -132,7 +132,7 @@ namespace TankBot
             Bitmap bitmap, back_graph;
             TankBot tankBot = TankBot.getInstance();
             Graphics g;
-            try { back_graph = new Bitmap(TBConst.dataPath + TankBot.getInstance().mapName + ".jpg"); }
+            try { back_graph = new Bitmap(TBConst.jpgPath + TankBot.getInstance().mapName + ".jpg"); }
             catch { back_graph = new Bitmap(panel_minimap.Width, panel_minimap.Height); }
             bitmap = new Bitmap(back_graph, panel_minimap.Size);
             g = Graphics.FromImage(bitmap);

@@ -26,7 +26,6 @@ namespace TankBot
                 return _wotRootPath;
             }
         }
-        public static string dataPath = TBConst.wotRootPath + @"res_mods\Data\";
         public static string ahkPath = TBConst.wotRootPath + @"res_mods\key_map.exe";
         public static string logFile = TBConst.wotRootPath + @"tankbot.log";
         public static string basePath = TBConst.wotRootPath + @"res_mods\base\base.txt";

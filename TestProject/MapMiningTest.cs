@@ -70,18 +70,16 @@ namespace TestProject
         [TestMethod()]
         public void genRouteTagMapTest()
         {
-            return;
-            /*
-            string _map_name = "22_slough"; // TODO: 初始化为适当的值
+            string _map_name = "42_north_america"; // TODO: 初始化为适当的值
             MapMining target = new MapMining(_map_name); // TODO: 初始化为适当的值
-            Point source = new Point(3,3); // TODO: 初始化为适当的值
-            Point target1 = target.enemyBase(10, 10) ; // TODO: 初始化为适当的值
-            Trajectory expected = null; // TODO: 初始化为适当的值
+            Point source = new Point(3.528571, 10.0547619); // TODO: 初始化为适当的值
+            Point enemybase = new Point (9.6506024, 2.369879) ; // TODO: 初始化为适当的值
+            
             Trajectory actual;
-            actual = target.genRouteTagMap(source, target1);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("验证此测试方法的正确性。");
-             * */
+            actual = target.genRouteTagMap(source, enemybase);
+            Assert.AreEqual(actual.Count > 0, true);
+            
+
         }
     }
 }
