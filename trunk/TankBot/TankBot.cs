@@ -535,7 +535,10 @@ namespace TankBot
                 //check move forward or not
 
                 if (support() >= 1)
+                {
                     loadRouteToEnemyBase();
+                    
+                }
                 return;
             }
 
