@@ -27,7 +27,7 @@ namespace TankBot
         public void Clear()
         {
             username = "";
-            tankname = "";
+            tankName = "";
             uid = 0;
             posScreen.Clear();
             posRaw.Clear();
@@ -42,7 +42,7 @@ namespace TankBot
 
         }
         public string username = ""; // bbsang, duck_german, etc.s
-        public string tankname = ""; // kv-1s, is, etc.
+        public string tankName = ""; // kv-1s, is, etc.
         public int uid; // an ??internal?? id
         public bool posScreenUpdated;
         public List<Tuple<Point, DateTime>> pos_raw_history = new List<Tuple<Point, DateTime>>();

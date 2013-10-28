@@ -296,6 +296,14 @@ namespace TankBot
             SetForegroundWindow(TBConst.wotHandle);
             Thread.Sleep(100);
         }
+
+        internal static void LogPersistent(string p)
+        {
+            StreamWriter file = new System.IO.StreamWriter(TBConst.logPersistentFile, true);
+            string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            file.WriteLine("[persistent]" + " " + timestamp + " " + p);
+            file.Flush();
+        }
     }
     public struct PointINT
     {

@@ -127,7 +127,7 @@ namespace TankBot
                             {
                                 happen = true;
                                 v.username = u_name;
-                                v.tankname = v_name;
+                                v.tankName = v_name;
                                 v.uid = Convert.ToInt32(uid);
                                 break;
                             }
@@ -157,7 +157,7 @@ namespace TankBot
                     string[] sp = line.Split('@');
                     v.icon = sp[sp.Length - 1];
                     v.username = sp[sp.Length - 2];
-                    v.tankname = sp[sp.Length - 3];
+                    v.tankName = sp[sp.Length - 3];
                 }
             }
             catch
