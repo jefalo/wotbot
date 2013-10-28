@@ -137,7 +137,7 @@ namespace TankBot
                 Helper.LogInfo("enter the game");
                 
                 Thread.Sleep(10000);
-                TankBot.getInstance().status = TankBot.Status.IN_HANGAR;
+                TankBot.getInstance().status = Status.IN_HANGAR;
             }
 
         }

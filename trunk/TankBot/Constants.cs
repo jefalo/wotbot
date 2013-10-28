@@ -10,6 +10,9 @@ namespace TankBot
 {
     public class TBConst
     {
+        public static double screen_width = 1280;
+        public static double screen_height = 768;
+
         public static string version = "49";
 
         public static bool RealBattle = true;

@@ -119,13 +119,13 @@ namespace TankBot
                 if (message == "die" )
                 {
 
-                    if (TankBot.getInstance().status == TankBot.Status.DIE)
+                    if (TankBot.getInstance().status == Status.DIE)
                     {
                         TankAction.exitToHangar();
                     }
-                    if (TankBot.getInstance().status == TankBot.Status.PLAYING)
+                    if (TankBot.getInstance().status == Status.PLAYING)
                     {
-                        TankBot.getInstance().status = TankBot.Status.DIE;
+                        TankBot.getInstance().status = Status.DIE;
                         TankAction.exitToHangar();
                     }
                 }

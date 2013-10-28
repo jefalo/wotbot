@@ -226,8 +226,8 @@ namespace TankBot
         {
             // TODO better not put those stuff here
             // TODO actual not exactly PLAYING, should be waiting.
-            if (TankBot.getInstance().status == TankBot.Status.IN_HANGAR)
-                TankBot.getInstance().status = TankBot.Status.COUNT_DOWN;
+            if (TankBot.getInstance().status == Status.IN_HANGAR)
+                TankBot.getInstance().status = Status.COUNT_DOWN;
             //force this one update every 100ms
             clear_enemy_screen();
             foreach (Vehicle v in TankBot.getInstance().enemyTank)
@@ -315,7 +315,7 @@ namespace TankBot
             health = health.Trim();
             Helper.LogInfo("health change" + health);
             if (health == "0")
-                TankBot.getInstance().status = TankBot.Status.DIE;
+                TankBot.getInstance().status = Status.DIE;
             TankBot.getInstance().myTank.health = Convert.ToInt32(health);
         }
         /// <summary>
@@ -409,9 +409,9 @@ Helper.LogMessage(message);
                 update_bigworld_target(message);
 
             if (message.IndexOf("View loaded: hangar") >= 0)
-                TankBot.getInstance().status = TankBot.Status.IN_HANGAR;
+                TankBot.getInstance().status = Status.IN_HANGAR;
             if (message.IndexOf("View loaded: battleResults") >= 0)
-                TankBot.getInstance().status = TankBot.Status.SHOW_BATTLE_RESULTS;
+                TankBot.getInstance().status = Status.SHOW_BATTLE_RESULTS;
 
 
             if (message.IndexOf("DamagePanel_health") >= 0)

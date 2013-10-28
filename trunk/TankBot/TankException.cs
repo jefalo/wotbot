@@ -26,4 +26,18 @@ namespace TankBot
             Helper.LogException("EnemyBaseReadException");
         }
     }
+    class CannotMoveForwardException : Exception
+    {
+        public CannotMoveForwardException()
+        {
+            Helper.LogException("CannotMoveForwardException");
+        }
+    }
+    class StatusChangeException : Exception
+    {
+        public StatusChangeException()
+        {
+            Helper.LogException("StatusChangeException");
+        }
+    }
 }

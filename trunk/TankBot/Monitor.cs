@@ -10,7 +10,7 @@ namespace TankBot
     class Monitor
     {
         private static DateTime statusLastChangedTime;
-        private static TankBot.Status oldStatus;
+        private static Status oldStatus;
         public static void startThread()
         {
             TankBot tb = TankBot.getInstance();
