@@ -5,8 +5,8 @@ using System.Text;
 
 namespace TankBot
 {
-    enum VehicleClass { HT, MT, LT, SPG, TD, ERROR };
-    class VehicleInfo
+    public enum VehicleClass { HT, MT, LT, SPG, TD, ERROR };
+    public class VehicleInfo
     {
         
         public int tier;

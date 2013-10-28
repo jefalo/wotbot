@@ -81,10 +81,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aim.cs" />
     <Compile Include="CheatClient.cs" />
     <Compile Include="CheckSetting.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Monitor.cs" />
+    <Compile Include="Move.cs" />
     <Compile Include="SniperMode.cs" />
     <Compile Include="TankAction.cs" />
     <Compile Include="Constants.cs" />

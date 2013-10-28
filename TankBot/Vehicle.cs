@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TankBot
 {
-    class Vehicle
+    public class Vehicle
     {
         public VehicleInfo vInfo
         {
