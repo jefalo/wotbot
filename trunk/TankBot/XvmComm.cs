@@ -88,15 +88,15 @@ namespace TankBot
                     if (line.IndexOf("MAP_NAME:") > -1)
                     {
                         int x = line.IndexOf("$");
-                        string map_name = line.Substring(x + 1);
-                        map_name = map_name.Trim();
-                        TankBot.getInstance().mapName = map_name;
+                        string mapName = line.Substring(x + 1);
+                        mapName = mapName.Trim();
+                        TankBot.getInstance().mapName = mapName;
                     }
                 }
             }
             catch
             {
-                TankBot.getInstance().mapName = "";
+                Helper.LogException("readMapName got error");
             }
         }
         private void readPlayerPanel(string file_name, Vehicle[] vehicles)
@@ -142,7 +142,7 @@ namespace TankBot
             }
             catch
             {
-                //Helper.LogException("read player panel exception");
+                Helper.LogException("read player panel got exception");
             }
         }
         private void readPlayerPanelSelf(string file_name, Vehicle v)
@@ -162,7 +162,7 @@ namespace TankBot
             }
             catch
             {
-                //Helper.LogException("read self panel exception");
+                Helper.LogException("read self panel exception");
             }
         }
         private void readPlayerPanel()

@@ -74,7 +74,7 @@ namespace TankBot
         MapMining mapMining;
 
         public DateTime aimStartTime;
-        private bool routeloaded;
+        private bool routeLoaded;
 
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace TankBot
             focusTarget = false;
             timeLeft = 100;
             cannot_move = 0;
-            routeloaded = false;
+            routeLoaded = false;
             timeLeft = 0;
 
         }
@@ -128,7 +128,7 @@ namespace TankBot
         /// </summary>
         private void noAimMoveTankTurret()
         {
-            if (TBConst.noMoveTank)
+            if (TBConst.notMoveTank)
                 return;
             double degree_diff = myTank.direction - myTank.cameraDirection;
             int x_move = Convert.ToInt32(degree_diff / mouseHorizonRatio[SniperMode.sniper_level]);
@@ -709,27 +709,25 @@ namespace TankBot
         /// </summary>
         private void loadRoute()
         {
-            Helper.LogInfo("load route");
-            if (TBConst.noMoveTank)
+            Helper.LogInfo("load route map name: " + mapName);
+            Helper.LogInfo("load route myTank.pos: " + myTank.pos);
+            if (TBConst.notMoveTank)
             {
-                Helper.LogInfo("load route returns noMoveTank");
+                Helper.LogInfo("load route returns as notMoveTank=true");
                 return;
             }
-            if (this.routeloaded)
+            if (this.routeLoaded)
             {
                 Helper.LogInfo("load route returns already loaded");
                 return;
             }
-            this.routeloaded = true;
+            this.routeLoaded = true;
             while (this.mapName == "")
                 Thread.Sleep(1000);
-            while(myTank.pos.x==6   && myTank.pos.y==6)
+            while(myTank.pos.x==6 && myTank.pos.y==6)
                 Thread.Sleep(1000);
             Thread.Sleep(3000);
-            Helper.LogInfo("loadroute may name " + mapName);
-            Helper.LogInfo("loadroute my tank pos " + myTank.pos);
 
-            mapName = this.mapName.Trim();
             this.mapSacle = MapDef.map_size[mapName];
 
             mapMining = new MapMining(this.mapName);
@@ -865,7 +863,7 @@ namespace TankBot
                     }
 
 
-                    if (!TBConst.noMoveTank)
+                    if (!TBConst.notMoveTank)
                     {
                         loadRoute();
 
@@ -881,7 +879,7 @@ namespace TankBot
                         aAimingThread.Join();
                         Helper.LogInfo("join aimingThread");
                     }
-                    if (!TBConst.noMoveTank)
+                    if (!TBConst.notMoveTank)
                     {
 
                         aMovingThread.Join();
