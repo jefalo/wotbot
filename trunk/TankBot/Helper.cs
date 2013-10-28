@@ -244,7 +244,7 @@ namespace TankBot
                 Log("[INFO]", lines);
 
             if (mainForm != null)
-                mainForm.setTextLog(lines, true);
+                mainForm.appendTextLog(lines, true);
         }
         static public void LogException(String lines)
         {
