@@ -374,7 +374,7 @@ namespace TankBot
                     Helper.LogInfo("throw CannotAimException");
                     throw new CannotAimException();
                 }
-                Helper.LogDebug("aiming at tank " + v.tankname + " " + v.username);
+                Helper.LogDebug("aiming at tank " + v.tankName + " " + v.username);
             }
             
         }
@@ -507,6 +507,7 @@ namespace TankBot
             if (this.cannot_move >= 3)
             {
                 status = Status.DIE;
+                Helper.LogPersistent("exit due to cannot move " + this.myTank.tankName + " " + this.mapName);
                 return;
             }
 
@@ -924,7 +925,7 @@ namespace TankBot
             str += "\r\n" + "g_degree_diff: " + gDegreeDiff;
             str += "\r\n" + "Sniper Level: " + SniperMode.sniper_level;
             str += "\r\n" + "Status: " + status;
-            str += "\r\n" + "Mytank Name: " + myTank.tankname + " " + myTank.vInfo.tier + " " + myTank.vInfo.vClass;
+            str += "\r\n" + "Mytank Name: " + myTank.tankName + " " + myTank.vInfo.tier + " " + myTank.vInfo.vClass;
             str += "\r\n" + "Health: " + myTank.health;
             str += "\r\n" + "Speed: " + myTank.speed;
             str += "\r\n" + "Focus: " + focusTarget;
