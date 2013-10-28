@@ -55,25 +55,25 @@ namespace TankBot
 
 
         delegate void SetTextLogCallback(string text);
-        public void setTextLog(string text)
+        public void appendTextLog(string text)
         {
             if (this.textBoxLog.InvokeRequired)
             {
-                SetTextLogCallback d = new SetTextLogCallback(setTextLog);
+                SetTextLogCallback d = new SetTextLogCallback(appendTextLog);
                 this.Invoke(d, new object[] { text });
             }
             else
             {
-                this.textBoxLog.Text = text;
+                this.textBoxLog.AppendText( text);
             }
         }
-        public void setTextLog(string text, bool append)
+        public void appendTextLog(string text, bool append)
         {
             if (TBConst.releaseMode)
                 return;
             if(append)
             {
-                setTextLog(textBoxLog.Text + "\r\n" + text);
+                appendTextLog("\r\n" + text);
             }
         }
 
