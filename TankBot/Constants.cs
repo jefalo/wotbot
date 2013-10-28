@@ -84,7 +84,7 @@ namespace TankBot
 
         public static bool noClick = false;
         public static bool noAim = false;
-        public static bool noMoveTank = false;
+        public static bool notMoveTank = false;
         public static bool cheatSlaveMode = true;
         /// <summary>
         /// in release mode, no output would display
