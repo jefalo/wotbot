@@ -41,6 +41,8 @@ namespace TankBot
 
 
         #region definition
+
+        public bool focusTargetHappen;
         //information about battle/hangar
         private Status _status;
         public Status status
@@ -64,6 +66,7 @@ namespace TankBot
         public List<Point> route = new List<Point>();
         public int nextRoutePoint = 0;
         public string penetration = "";
+        public bool penetrationPossible { get { return penetration == "green" || penetration == "yellow" || penetration == "orange"; } }
         public bool focusTarget = false;
         public bool focusTargetUpdated;
         public double mapSacle = 100; // 100 meter per 1 box on minimap.
@@ -88,11 +91,10 @@ namespace TankBot
 
 
         private Thread aAimingThread;
-        private Thread aAimingHelperThread;
+        private Thread aShootingThread;
         private Thread aMovingThread;
         #endregion
 
-        public bool penetrationPossible { get { return penetration == "green" || penetration == "yellow" || penetration == "orange"; } }
 
         public void Clear()
         {
@@ -125,7 +127,7 @@ namespace TankBot
         /// and check other stuff
         /// and do the click 
         /// </summary>
-        private void aimingHelperThread()
+        private void shootingThread()
         {
             DateTime lastclick = DateTime.Now;
             while (true)
@@ -156,21 +158,21 @@ namespace TankBot
             Thread.Sleep(2000);
             SniperMode.resetSniperLevel();
             Aim aim = new Aim();
-            try
+
+            while (true)
             {
-                while (true)
+                try
                 {
                     aim.aim();
                 }
+                catch
+                {
+                    break;
+                }
             }
-            catch
-            {
 
-            }
 
         }
-
-
 
 
 
@@ -260,14 +262,14 @@ namespace TankBot
             this.routeLoaded = true;
             while (this.mapName == "")
                 Thread.Sleep(1000);
-            while(myTank.pos.x==6 && myTank.pos.y==6)
+            while (myTank.pos.x == 6 && myTank.pos.y == 6)
                 Thread.Sleep(1000);
             Thread.Sleep(3000);
 
             this.mapSacle = MapDef.map_size[mapName];
 
             mapMining = new MapMining(this.mapName);
-            
+
             this.enemyBase = mapMining.enemyBase(myTank.pos);
 
             //if (myTank.vInfo.vClass == VehicleClass.HT)
@@ -281,7 +283,7 @@ namespace TankBot
             else
                 loadRouteToFirePos(); // HT choose a more far away route
             //else
-              //  loadRouteToEnemyBase();
+            //  loadRouteToEnemyBase();
             this.startPos = myTank.pos;
         }
         #endregion
@@ -305,7 +307,9 @@ namespace TankBot
             }
             return rtn;
         }
-
+        /// <summary>
+        /// initial argument based on the sensitivity
+        /// </summary>
         private void initArgsInBattle()
         {
             this.Clear();
@@ -340,7 +344,6 @@ namespace TankBot
 
         }
 
-        public bool focusTargetHappen;
         public bool noAimMove()
         {
             if (TBConst.cheatSlaveMode && CheatClient.getInstance().cheatMasterOnOtherSide())
@@ -352,122 +355,145 @@ namespace TankBot
             Helper.LogInfo("TankBot abortThread");
             try { aAimingThread.Abort(); }
             catch { }
-            try { aAimingHelperThread.Abort(); }
+            try { aShootingThread.Abort(); }
             catch { }
             try { aMovingThread.Abort(); }
             catch { }
             this.Clear();
         }
+
+        public void actionHangar()
+        {
+            this.Clear();
+            if (TBConst.cheatSlaveMode)
+            {
+                Thread.Sleep(1000);
+                return ;
+            }
+            Helper.LogInfo("click tank for battle");
+            foreach (int p in TankAction.clickOrder())
+            {
+                //Console.WriteLine("click the tank " + p);
+                TankAction.clickTank(p);
+                TankAction.clickStart();
+            }
+            Thread.Sleep(20000);
+        }
+        public void actionCountDown()
+        {
+            if (timeLeft > 60)
+            {
+                status = Status.PLAYING;
+                return;
+            }
+            Thread.Sleep(5000);
+            this.Clear();
+            Thread.Sleep(5000);
+            loadRoute();
+            while (true)
+            {
+                if (timeLeft > 100 || timeLeft < 1)
+                {
+                    status = Status.PLAYING;
+                    Thread.Sleep(1000);
+                    break;
+                }
+            }
+        }
+
         public void startThread()
         {
             Helper.LogInfo("---------TankBot startThread------------");
 
-            //for xvm comm to init the argument 
-            //Thread.Sleep(1000);
-            while (XvmComm.getInstance().messageCnt < 1000)
-                ; 
+            //wait for connection establish
+            while (XvmComm.getInstance().messageCnt < 100)
+                Thread.Sleep(1000);
+
             initArgsInBattle();
             while (true)
             {
-
                 if (status == Status.IN_HANGAR)
                 {
-                    this.Clear();
-                    if (TBConst.cheatSlaveMode)
-                    {
-                        Thread.Sleep(1000);
-                        continue;
-                    }
-                    Helper.LogInfo("click tank for battle");
-                    foreach (int p in TankAction.clickOrder())
-                    {
-                        //Console.WriteLine("click the tank " + p);
-                        TankAction.clickTank(p);
-                        TankAction.clickStart();
-                    }
-                    Thread.Sleep(20000);
+                    actionHangar();
                 }
                 else if (status == Status.QUEUING || status == Status.COUNT_DOWN)
                 {
-                    if (timeLeft > 60)
-                    {
-                        status = Status.PLAYING;
-                        continue;
-                    }
-                    Thread.Sleep(5000);
-                    this.Clear();
-                    Thread.Sleep(5000);
-                    loadRoute();
-                    while (true)
-                    {
-                        if (timeLeft > 100 || timeLeft < 1)
-                        {
-                            status = Status.PLAYING;
-                            Thread.Sleep(1000);
-                            break;
-                        }
-                    }
+                    actionCountDown();
                 }
                 else if (status == Status.PLAYING)
                 {
-                    if (!TBConst.noAim)
-                    {
-                        Helper.LogInfo("start aimingThread");
-                        aAimingThread = new Thread(new ThreadStart(this.aimingThread));
-                        aAimingHelperThread = new Thread(new ThreadStart(aimingHelperThread));
-                        aAimingThread.Start();
-                        aAimingHelperThread.Start();
-                    }
-
-
-                    if (!TBConst.notMoveTank)
-                    {
-                        loadRoute();
-
-                        Helper.LogInfo("start movingThread");
-                        aMovingThread = new Thread(new ThreadStart(this.movingThread));
-                        aMovingThread.Start();
-                    }
-
-                    if (!TBConst.noAim)
-                    {
-                        aAimingHelperThread.Join();
-                        Helper.LogInfo("join aAimingHelperThread");
-                        aAimingThread.Join();
-                        Helper.LogInfo("join aimingThread");
-                    }
-                    if (!TBConst.notMoveTank)
-                    {
-
-                        aMovingThread.Join();
-                        Helper.LogInfo("join movingThread");
-                    }
+                    actionPlaying();
                 }
                 else if (status == Status.DIE)
                 {
-                    if (TBConst.cheatSlaveMode && CheatClient.getInstance().cheatMasterOnOtherSide())
-                    {
-                        Helper.LogInfo("DIE and left click to change view");
-                        Helper.leftClickSlow();
-                        Thread.Sleep(5000);
-                        continue;
-                    }
-                    TankAction.exitToHangar();
-
+                    actionDie();
                 }
                 else if (status == Status.SHOW_BATTLE_RESULTS)
                 {
-                    Helper.LogInfo("press esc to eliminate battle results");
-                    Thread.Sleep(5000);
-                    //ESC
-                    Helper.bringToFront();
-                    Helper.keyPress("b", Helper.KEY_TYPE.PRESS);
-                    Thread.Sleep(1000);
-                    status = Status.IN_HANGAR;
+                    actionShowBattleResult();
                 }
                 Thread.Sleep(1000);
             }
 
+        }
+
+        private void actionShowBattleResult()
+        {
+            Helper.LogInfo("press esc to eliminate battle results");
+            Thread.Sleep(5000);
+            //ESC
+            Helper.bringToFront();
+            Helper.keyPress("b", Helper.KEY_TYPE.PRESS);
+            Thread.Sleep(1000);
+            status = Status.IN_HANGAR;
+        }
+
+        private void actionDie()
+        {
+            if (TBConst.cheatSlaveMode && CheatClient.getInstance().cheatMasterOnOtherSide())
+            {
+                Helper.LogInfo("DIE and left click to change view");
+                Helper.leftClickSlow();
+                Thread.Sleep(5000);
+                return;
+            }
+            TankAction.exitToHangar();
+        }
+
+        private void actionPlaying()
+        {
+            if (!TBConst.noAim)
+            {
+                Helper.LogInfo("start aimingThread");
+                aAimingThread = new Thread(new ThreadStart(this.aimingThread));
+                aShootingThread = new Thread(new ThreadStart(shootingThread));
+                aAimingThread.Start();
+                aShootingThread.Start();
+            }
+
+
+            if (!TBConst.notMoveTank)
+            {
+                loadRoute();
+
+                Helper.LogInfo("start movingThread");
+                aMovingThread = new Thread(new ThreadStart(this.movingThread));
+                aMovingThread.Start();
+            }
+
+            if (!TBConst.noAim)
+            {
+                aShootingThread.Join();
+                Helper.LogInfo("join aAimingHelperThread");
+                aAimingThread.Join();
+                Helper.LogInfo("join aimingThread");
+            }
+            if (!TBConst.notMoveTank)
+            {
+
+                aMovingThread.Join();
+                Helper.LogInfo("join movingThread");
+            }
         }
         internal string debugString()
         {
@@ -487,9 +513,6 @@ namespace TankBot
             str += "\r\n" + "time_left: " + timeLeft;
             return str;
         }
-
-
-
     }
 }
 

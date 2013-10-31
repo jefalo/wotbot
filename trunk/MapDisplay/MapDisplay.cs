@@ -55,7 +55,7 @@ namespace TankBot
 
             if (map_name[map_name.Length - 1] >= '0' && map_name[map_name.Length - 1] <= '9')
                 map_name = map_name.Substring(0, map_name.Length - 1);
-            img = Image.FromFile(TBConst.jpgPath + map_name + ".jpg");
+            img = Image.FromFile(TBConst.tagPath + map_name + ".bmp");
 
 
             mapMining = new MapMining(map_name);
