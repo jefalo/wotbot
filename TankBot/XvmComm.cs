@@ -408,9 +408,11 @@ Helper.LogMessage(message);
             if (message.IndexOf("BigWorld_target") >= 0)
                 update_bigworld_target(message);
 
-            if (message.IndexOf("View loaded: hangar") >= 0)
+            
+
+            if (message.IndexOf("processView: hangar") >= 0)
                 TankBot.getInstance().status = Status.IN_HANGAR;
-            if (message.IndexOf("View loaded: battleResults") >= 0)
+            if (message.IndexOf("processView: battleResults") >= 0)
                 TankBot.getInstance().status = Status.SHOW_BATTLE_RESULTS;
 
 
