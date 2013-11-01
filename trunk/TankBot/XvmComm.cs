@@ -85,7 +85,7 @@ namespace TankBot
                 using (StreamReader sr = new StreamReader(TBConst.wotRootPath + "map_name.log"))
                 {
                     string line = sr.ReadToEnd();
-                    if (line.IndexOf("MAP_NAME:") > -1)
+                    if (line.IndexOf("MAP_NAME :") > -1)
                     {
                         int x = line.IndexOf("$");
                         string mapName = line.Substring(x + 1);
