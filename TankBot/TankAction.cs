@@ -114,7 +114,7 @@ namespace TankBot
             TBConst.windowY = p.Y;
 
             TBConst.botPort = TBConst.pid % 10000 + 10000;
-
+            Helper.LogInfo("botPort" + TBConst.botPort);
         }
 
         internal static void startWOT()
