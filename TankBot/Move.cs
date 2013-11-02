@@ -32,7 +32,6 @@ namespace TankBot
 
         internal void moveForward()
         {
-
             DateTime t = DateTime.Now;
             if (closeToAllyTank())
             {
@@ -53,7 +52,7 @@ namespace TankBot
             }
 
             // seems we can aim to something
-            if (tb.penetrationPossible || tb.focusTarget)
+            if (tb.penetrationPossible || tb.focusTarget || tb.focusTargetHappen )
             {
                 if (tb.myTank.speed != 0)
                 {

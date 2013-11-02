@@ -153,11 +153,12 @@ namespace TankBot
                 Thread.Sleep(1);
             }
         }
+        Aim aim;
         private void aimingThread()
         {
             Thread.Sleep(2000);
             SniperMode.resetSniperLevel();
-            Aim aim = new Aim();
+            aim = new Aim();
 
             while (true)
             {
@@ -381,6 +382,7 @@ namespace TankBot
         }
         public void actionCountDown()
         {
+            Thread.Sleep(1000);
             if (timeLeft > 60)
             {
                 status = Status.PLAYING;
@@ -511,6 +513,10 @@ namespace TankBot
             str += "\r\n" + "Speed: " + myTank.speed;
             str += "\r\n" + "Focus: " + focusTarget;
             str += "\r\n" + "time_left: " + timeLeft;
+
+
+            if(aim!=null)
+                str += aim.debugString();
             return str;
         }
     }

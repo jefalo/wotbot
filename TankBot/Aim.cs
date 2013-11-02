@@ -55,7 +55,7 @@ namespace TankBot
 
 
             // force everything to update to correct 
-            Thread.Sleep(50);
+            
 
             double cameraDirectionBeforeMouseMove = tb.myTank.cameraDirection;
 
@@ -114,7 +114,10 @@ namespace TankBot
             //Console.WriteLine("aiming " + et.username);
             //Console.WriteLine("move cursor " + x_move + " " + y_move);
             Helper.MoveCursor(x_move, y_move);
-
+            if(y_move==0)
+                Thread.Sleep(50);
+            else
+                Thread.Sleep(30);
             /*
             et.posScreenUpdated = false;
             myTank.directionUpdated = false;
@@ -171,7 +174,7 @@ namespace TankBot
             }
             tb.focusTargetHappen = false;
             DateTime start = DateTime.Now;
-            while ((DateTime.Now - start).Seconds < 1)
+            while ((DateTime.Now - start).Seconds < 3)
             {
                 Random r = new Random();
                 aimToTankArgxArgy(tb.enemyTank[uid], r.NextDouble() * 4 - 2, r.NextDouble() * 4);
@@ -184,6 +187,7 @@ namespace TankBot
             Helper.LogDebug("findBestAim " + uid + " return false");
             return false;
         }
+        private string findBestAimDebugString;
         internal int findBestAim()
         {
             List<Tuple<double, int>> dist = new List<Tuple<double, int>>();
@@ -196,13 +200,15 @@ namespace TankBot
             }
             dist.Sort();
             Helper.LogDebug("Try find best aim");
+            findBestAimDebugString = "";
             for (int i = 0; i < dist.Count; i++)
             {
+                int tid = dist[i].Item2;
+                findBestAimDebugString += "id: " + dist[i].Item2 + " dist: " + dist[i].Item1 + " " + tb.enemyTank[tid].tankName;
                 double mindis = dist[0].Item1;
                 // only try the one near the minimal distance one.
                 if (dist[i].Item1 > mindis + 1)
                     break;
-                int tid = dist[i].Item2;
                 Helper.LogDebug("choose_tank " + tid);
                 SniperMode.setSniperMode(6);
                 if (findBestAim(tid))
@@ -264,7 +270,10 @@ namespace TankBot
             Helper.LogDebug("no enemy on screen");
             return true;
         }
-
+        public string debugString()
+        {
+            return "\r\n " + findBestAimDebugString;
+        }
         internal void aim()
         {
             if (tb.status != Status.PLAYING)
