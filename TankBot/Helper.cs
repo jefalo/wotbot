@@ -111,6 +111,14 @@ namespace TankBot
                 foregroundPID = (int)pid;
                 
                 Thread.Sleep(1000);
+                
+
+                Process[] processes = Process.GetProcessesByName("WorldOfTanks");
+                if (processes.Length == 0)
+                {
+                    Process.Start("restart.bat");
+                    Thread.Sleep(10000);
+                }
             }
         }
 
