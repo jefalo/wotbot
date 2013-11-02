@@ -372,6 +372,7 @@ namespace TankBot
                 return ;
             }
             Helper.LogInfo("click tank for battle");
+            TankAction.moveCarouselLeft();
             foreach (int p in TankAction.clickOrder())
             {
                 //Console.WriteLine("click the tank " + p);
