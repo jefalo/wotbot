@@ -271,8 +271,9 @@ namespace TankBot
             line = line.Trim();
             string[] sp = line.Split(' ');
             string uname = sp[0].Trim();
-            if (uname.IndexOf('[') >= 0)
-                uname = uname.Substring(0, uname.IndexOf('['));
+            
+            //if (uname.IndexOf('[') >= 0)
+                //uname = uname.Substring(0, uname.IndexOf('['));
 
             foreach (Vehicle v in TankBot.getInstance().enemyTank)
             {
@@ -410,7 +411,7 @@ Helper.LogMessage(message);
 
             
 
-            if (message.IndexOf("processView: hangar") >= 0)
+            if (message.IndexOf("processView: lobby") >= 0)
                 TankBot.getInstance().status = Status.IN_HANGAR;
             if (message.IndexOf("processView: battleResults") >= 0)
                 TankBot.getInstance().status = Status.SHOW_BATTLE_RESULTS;
