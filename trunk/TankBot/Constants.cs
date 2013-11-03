@@ -32,7 +32,7 @@ namespace TankBot
         public static string ahkPath = TBConst.wotRootPath + @"res_mods\key_map.exe";
         public static string logFile = TBConst.wotRootPath + @"tankbot.log";
         public static string logPersistentFile = TBConst.wotRootPath + @"tankbotPersistent.log";
-        public static string basePath = TBConst.wotRootPath + @"res_mods\base\base.txt";
+        
 
         public static string logFileMessage = TBConst.wotRootPath + @"tankbot_message.log";
         private static string _localIP="0.0.0.0";
