@@ -342,26 +342,15 @@ namespace TankBot
         {
             try
             {
-
-                using (System.IO.StreamReader sr = new StreamReader(TBConst.basePath))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        string line = sr.ReadLine();
-                        if (line.StartsWith(this.map_name))
-                        {
-                            Point p1 = MapDef.basePos[this.map_name].Item1;
-                            Point p2 = MapDef.basePos[this.map_name].Item2;
+                Point p1 = MapDef.basePos[this.map_name].Item1;
+                Point p2 = MapDef.basePos[this.map_name].Item2;
                             
-                            p1 = TBMath.BigWorldPos2MinimapPos(p1, map_name);
-                            p2 = TBMath.BigWorldPos2MinimapPos(p2, map_name);
-                            if (TBMath.distance(startPoint, p1) < TBMath.distance(startPoint, p2))
-                                return p2;
-                            else
-                                return p1;
-                        }
-                    }
-                }
+                p1 = TBMath.BigWorldPos2MinimapPos(p1, map_name);
+                p2 = TBMath.BigWorldPos2MinimapPos(p2, map_name);
+                if (TBMath.distance(startPoint, p1) < TBMath.distance(startPoint, p2))
+                    return p2;
+                else
+                    return p1;
             }
             catch
             {
