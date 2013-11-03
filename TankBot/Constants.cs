@@ -13,7 +13,7 @@ namespace TankBot
         public static double screen_width = 1280;
         public static double screen_height = 768;
 
-        public static string version = "50";
+        public static string version = "51";
 
         public static bool RealBattle = true;
         static string _wotRootPath = "";
