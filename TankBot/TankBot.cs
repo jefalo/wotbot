@@ -282,7 +282,7 @@ namespace TankBot
             else if (myTank.vInfo.tier <= 3)
                 loadRouteToEnemyBase();
             else
-                loadRouteToFirePos(); // HT choose a more far away route
+                loadRouteToEnemyBase(); // HT choose a more far away route
             //else
             //  loadRouteToEnemyBase();
             this.startPos = myTank.pos;
